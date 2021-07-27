@@ -2,7 +2,11 @@ package com.jsoftware.platform.model;
 
 import lombok.*;
 
-@NoArgsConstructor @RequiredArgsConstructor @Getter @Setter @ToString
+@NoArgsConstructor
+@RequiredArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Product {
 
     private Long prodId;
@@ -11,5 +15,5 @@ public class Product {
     private String prodName;
 
     @NonNull
-    private int prodPrice;
+    private Integer prodPrice;
 }

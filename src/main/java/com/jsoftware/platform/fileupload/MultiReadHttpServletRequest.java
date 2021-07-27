@@ -24,7 +24,7 @@ public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
     }
 
     @Override
-    public BufferedReader getReader() throws IOException{
+    public BufferedReader getReader() throws IOException {
         return new BufferedReader(new InputStreamReader(getInputStream()));
     }
 
@@ -34,7 +34,7 @@ public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
     }
 
     public class CachedServletInputStream extends ServletInputStream {
-        private ByteArrayInputStream input;
+        private final ByteArrayInputStream input;
 
         public CachedServletInputStream() {
             input = new ByteArrayInputStream(cachedBytes.toByteArray());
@@ -56,7 +56,7 @@ public class MultiReadHttpServletRequest extends HttpServletRequestWrapper {
         }
 
         @Override
-        public int read() throws IOException {
+        public int read() {
             return input.read();
         }
     }

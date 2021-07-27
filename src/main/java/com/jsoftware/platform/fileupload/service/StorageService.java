@@ -8,13 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public interface StorageService {
+
     void init();
 
     void store(MultipartFile file);
+
     void store(MultipartFile file, String encodedFilename);
 
     Stream<Path> loadAll();
@@ -24,13 +25,14 @@ public interface StorageService {
     long uploadFiles(List<MultipartFile> files);
 
     void insertFileInfoToDB(FileVO fileVO);
+
     void insertFilesInfoToDB(List<FileVO> fileVOList);
 
     FileVO uploadFileToServer(MultipartFile file);
 
     void deleteAll();
 
-    void deleteFileToServer(FileVO fileVO)
+    void deleteFileToServer(FileVO fileVO);
 
     Path load(String filename);
 

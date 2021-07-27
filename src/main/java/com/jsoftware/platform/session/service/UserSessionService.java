@@ -4,6 +4,7 @@ import com.jsoftware.platform.session.model.UserSessionVO;
 
 public interface UserSessionService {
     UserSessionVO getRedisSessionData();
+
     String getLangCode();
 //    void setLangCode(String langCode);
 }

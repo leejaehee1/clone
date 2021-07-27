@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @RestController
 public class HomeController {
@@ -26,6 +27,12 @@ public class HomeController {
         @Override
         public DataItem mapRow(ResultSet rs, int rowNum) {
             System.out.println(rs.toString());
+            try {
+                return (DataItem) rs.getObject(rowNum);
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+
             return null;
         }
     }
@@ -38,7 +45,7 @@ public class HomeController {
     @GetMapping("/test/data")
     public String testDataSource(HttpSession session) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        String sql = "select * from table2 limit 10";
+        String sql = "select * from products limit 10";
         System.out.println(session);
         for (DataItem dataItem : jdbcTemplate.query(sql, new CustomRowMapper())) {
             System.out.println(dataItem.toJson());

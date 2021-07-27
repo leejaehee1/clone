@@ -4,8 +4,8 @@ import com.jsoftware.platform.fileupload.mapper.FileMapper;
 import com.jsoftware.platform.fileupload.model.FileVO;
 import com.jsoftware.platform.fileupload.service.StorageService;
 import com.jsoftware.platform.fileupload.storage.StorageFileNotFoundException;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -17,26 +17,20 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
+@AllArgsConstructor
 public class FileUploadController {
 
-    private final StorageService storageService;
+    final StorageService storageService;
 
-    @Autowired
-    FileMapper fileMapper;
-
-    @Autowired
-    public  FileUploadController(StorageService storageService) {
-        this.storageService = storageService;
-    }
+    final FileMapper fileMapper;
 
     @GetMapping("/uploadForm")
-    public String listUploadedFiles(Model model) throws IOException {
+    public String listUploadedFiles(Model model) {
         model.addAttribute("files", storageService.loadAll().map(
                 path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
                         "serveFile", path.getFileName().toString()).build().toUri().toString())
@@ -47,17 +41,19 @@ public class FileUploadController {
 
         model.addAttribute("filesInfo", storageService.loadAllFileList());
 
-        return "uploadForm.html";
+        return "uploadForm";
     }
 
     @PostMapping("/uploadForm")
-    public String handleFileUpload(@RequestParam("file")List<MultipartFile> files,
+    public String handleFileUpload(@RequestParam("file") List<MultipartFile> files,
                                    RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + files.size() + "!");
 
         long groupId = storageService.uploadFiles(files);
 
-        return "redirect:/uploadForm";
+        redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + files.size() + "!");
+        redirectAttributes.addFlashAttribute("groupId", groupId);
+
+        return "uploadForm";
     }
 
     @GetMapping("/files/{filename:.+}")
@@ -85,7 +81,7 @@ public class FileUploadController {
 
     @GetMapping("/fileupload/download/{id:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> downloadFile(HttpServletResponse response, @PathVariable long id) {
+    public ResponseEntity<Resource> downloadFile(@PathVariable long id) {
         FileVO file = new FileVO();
         file.setFileId(id);
         file = fileMapper.retrieveFile(file);
@@ -102,16 +98,10 @@ public class FileUploadController {
         return "success!";
     }
 
-    public ResponseEntity<Resource> servefileId(@PathVariable String filename) {
-        Resource file = storageService.loadAsResource(filename);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\'").body(file);
-    }
-
     @PostMapping("fileupload/update")
     @ResponseBody
-    public  String updateFiles(@RequestParam("file") MultipartFile file,
-                               @RequestParam("id") long id) {
+    public String updateFiles(@RequestParam("file") MultipartFile file,
+                              @RequestParam("id") long id) {
         FileVO fileVO = new FileVO();
         fileVO.setFileId(id);
         storageService.updateFile(file, fileVO);
@@ -120,6 +110,7 @@ public class FileUploadController {
 
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
+        System.out.println(exc.getCause().getMessage());
         return ResponseEntity.notFound().build();
     }
 }

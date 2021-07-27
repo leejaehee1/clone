@@ -25,9 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // TODO Auto-generated method stub
-        auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN", "DBA");
-        auth.inMemoryAuthentication().withUser("scott").password("tiger").roles("USER", "SETTING");
+        auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN", "DBA");
+        auth.inMemoryAuthentication().withUser("scott").password(passwordEncoder().encode("tiger")).roles("USER", "SETTING");
     }
 
     @Override

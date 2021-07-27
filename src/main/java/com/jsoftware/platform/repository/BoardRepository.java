@@ -1,33 +1,21 @@
 package com.jsoftware.platform.repository;
 
 import com.jsoftware.platform.model.Board;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Mapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Repository
-public class BoardRepository {
+@Mapper
+public interface BoardRepository {
 
-    // DB 조회 횟수
-    private static int dbCount = 0;
+    Board selectBoardById(Board board);
 
-    public List<Board> createBySize(String size) {
-        // DB 조회를 했다고 가정하여 카운트를 올린다.
-        dbCount++;
-        ArrayList<Board> boards = new ArrayList<>();
-        int count = Integer.parseInt(size);
+    List<Board> selectAllBoards();
 
+    void insertBoard(Board board);
 
-        for (int i = 0; i < count; i++) {
-            boards.add(new Board((long) i, i + "번째 게시물", i + "번째 내용"));
-        }
+    void updateBoard(Board board);
 
-        return boards;
-    }
-
-    public static int getDbCount() {
-        return dbCount;
-    }
+    void deleteBoard(Board board);
 
 }

@@ -10,15 +10,15 @@ import java.util.List;
 public interface FileMapper {
     List<FileVO> retrieveFileList();
 
-    public ArrayList<FileVO> retrieveAllFileList();
+    ArrayList<FileVO> retrieveAllFileList();
 
-    public FileVO retrieveFile(FileVO file);
+    FileVO retrieveFile(FileVO file);
 
-    public long retrieveNextGroupId();
+    long retrieveNextGroupId();
 
     long retrieveNextId();
 
-    public int insertFilesInfoToDB(FileVO file);
+    int insertFilesInfoToDB(FileVO file);
 
 
     int updateFile(FileVO file);

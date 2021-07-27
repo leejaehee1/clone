@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,15 +17,14 @@ public class RedisUtil {
             Set<String> keysTmp = new HashSet<>();
             try (Cursor<byte[]> cursor = connection.scan(new ScanOptions.ScanOptionsBuilder().match(pattern).count(100).build())) {
                 while (cursor.hasNext()) {
-                    keysTmp.add(new String(cursor.next(), "Utf-8"));
+                    keysTmp.add(new String(cursor.next(), StandardCharsets.UTF_8));
                 }
                 cursor.close();
             } catch (Exception e) {
                 log.error(e.getMessage(), e);
                 throw new RuntimeException(e);
             }
-            finally{
-            }
+
             return keysTmp;
         });
     }

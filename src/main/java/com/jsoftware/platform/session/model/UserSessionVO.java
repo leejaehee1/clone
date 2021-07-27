@@ -15,6 +15,4 @@ public class UserSessionVO implements Serializable {
     private Long userId;
     private String userNo;
     private String langCode;
-
-
 }

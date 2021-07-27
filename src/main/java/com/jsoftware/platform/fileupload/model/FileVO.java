@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
@@ -14,7 +14,6 @@ public class FileVO {
     public long fileId;
     public long fileGroupId;
     public long fileSeq;
-
     public String ClientFilename;
     public String ServerFilename;
     public BigDecimal FileSize;
@@ -22,7 +21,6 @@ public class FileVO {
     public String FileExtType;
     public String ServerPath;
     public BigDecimal CreatedBy;
-
     public BigDecimal lastUpdatedBy;
     public Timestamp lastUpdateDate;
 

@@ -1,14 +1,14 @@
 package com.jsoftware.platform.fileupload.storage;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 @ConfigurationProperties("storage")
 public class StorageProperties {
-    @Value("${spring.servlet.multipart.location}")
+
     private String location;
 
-    @Value("${fileupload.server-path}")
     private String serverPath;
 
     public String getLocation() {

@@ -5,16 +5,16 @@
 
     <select id="selectProductById" parameterType="com.jsoftware.platform.model.Product"
             resultType="com.jsoftware.platform.model.Product">
-        SELECT prod_id as prodId
-             , prod_name as prodName
+        SELECT prod_id    as prodId
+             , prod_name  as prodName
              , prod_price as prodPrice
         FROM products
         WHERE prod_price = #{prodPrice}
     </select>
 
     <select id="selectAllProducts" resultType="com.jsoftware.platform.model.Product">
-        SELECT prod_id as prodId
-             , prod_name as prodName
+        SELECT prod_id    as prodId
+             , prod_name  as prodName
              , prod_price as prodPrice
         FROM products
     </select>
